@@ -115,4 +115,8 @@ Python 테스트는 카드/매핑/UI/데이터 보존/분배/Excel을 검증합�
 
 ## 자동 수집 확장 설계
 
-[자동 전송·원본/마킹 이미지·관리자 조회 설계](docs/AUTO_COLLECTION_DESIGN.md)와 [API 데이터 예시](docs/auto_collection.example.json)를 추가했습니다. 이 문서는 후속 구현 명세이며 현재 배포본에서 중앙 서버 수집이 활성화된 상태는 아닙니다.
+[자동 전송·원본/마킹 이미지·관리자 조회 설계](docs/AUTO_COLLECTION_DESIGN.md)와 [API 데이터 예시](docs/auto_collection.example.json)를 추가했습니다. 전체 확장 설계이며 현재 구현 범위와 남은 운영 설정은 아래 문서에서 확인하세요.
+
+## Supabase 자동 수집 구현
+
+[구현 범위와 운영 설정](docs/COLLECTION_SETUP.md)을 확인하세요. 웹판에 수집 계정, 원본·마킹 이미지 자동 전송 대기열, 관리자 수집함을 추가했습니다. 실제 사용에는 앱 계정/관리자 지정과 인증 URL 설정이 필요하며, 일반 사용자 이메일 가입에는 별도 SMTP가 필요합니다. 기존 U01~U33 매핑과 장부 단가/분배 계산은 유지합니다.

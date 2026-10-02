@@ -24,12 +24,12 @@ test('member and reward updates persist across reload, referenced deletion is bl
  await page.goto('./');await page.locator('[data-tab="members"]').click();
  await page.locator('#member-add input').fill('새 참여자');await page.locator('#member-add button').click();
  await expect(page.locator('tbody tr')).toHaveCount(6);
- await page.locator('[data-member-name="6"]').fill('참여자 수정');await page.locator('[data-save-member="6"]').click();
- await page.locator('[data-member-active="6"]').uncheck();await page.locator('[data-save-member="6"]').click();
+ await page.locator('[data-member-name="6"]').fill('참여자 수정');await page.locator('[data-save-member="6"]').click();await expect(page.locator('[data-save-member="6"]')).toBeEnabled();
+ await page.locator('[data-member-active="6"]').uncheck();await page.locator('[data-save-member="6"]').click();await expect(page.locator('[data-save-member="6"]')).toBeEnabled();
  await page.reload();await page.locator('[data-tab="members"]').click();
  await expect(page.locator('[data-member-name="6"]')).toHaveValue('참여자 수정');await expect(page.locator('[data-member-active="6"]')).not.toBeChecked();
  page.on('dialog',d=>d.accept());await page.locator('[data-delete-member="6"]').click();await expect(page.locator('tbody tr')).toHaveCount(5);
- await page.locator('[data-tab="rewards"]').click();await page.locator('[data-r-value="5"]').fill('1234');await page.locator('[data-r-enabled="5"]').uncheck();await page.locator('[data-save-reward="5"]').click();
+ await page.locator('[data-tab="rewards"]').click();await page.locator('[data-r-value="5"]').fill('1234');await page.locator('[data-r-enabled="5"]').uncheck();await page.locator('[data-save-reward="5"]').click();await expect(page.locator('[data-save-reward="5"]')).toBeEnabled();
  await page.reload();await page.locator('[data-tab="rewards"]').click();await expect(page.locator('[data-r-value="5"]')).toHaveValue('1234');await expect(page.locator('[data-r-enabled="5"]')).not.toBeChecked();
  await page.screenshot({path:'test-results/rewards.png',fullPage:true});
 });

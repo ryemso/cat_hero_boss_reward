@@ -88,7 +88,7 @@ export async function recognize(canvas,state,seed,onProgress=()=>{}){
     const reward=state.rewards.find(r=>r.id===best.reward_id),accepted=best.score>=state.settings.match_threshold;
     const mode=accepted?reward.quantity_mode:'AUTO';let raw=null,confidence=null,status='기본 1개 (OCR 미사용)';
     if(mode!=='DEFAULT_ONE')try{const q=await readQuantity(card.canvas);raw=q.quantity;confidence=q.confidence;status=raw===null?'OCR 실패: 수량 확인 필요':'OCR 인식';}catch(e){status=`OCR 실패: 수량 확인 필요 (${e.message})`;}
-    output.push({reward_id:accepted?reward.id:null,quantity:raw??1,ocr_quantity:raw,score:best.score,
+    output.push({box:{x:card.box.x/canvas.width,y:card.box.y/canvas.height,w:card.box.w/canvas.width,h:card.box.h/canvas.height},recognized_reward_id:accepted?reward.id:null,reward_id:accepted?reward.id:null,quantity:raw??1,ocr_quantity:raw,score:best.score,
       candidate_id:best.candidate_id,candidate_name:reward.name,quantity_confidence:confidence,rarity:description.rarity,
       match_status:accepted?(reward.enabled?'자동매칭':'비활성 보상: 교체 필요'):'낮은 점수: 보상 확인 필요',quantity_status:status,thumbnail:card.canvas.toDataURL()});
   }

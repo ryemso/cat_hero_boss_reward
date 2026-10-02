@@ -1,0 +1,4 @@
+project_id = "muhxebuwucyknvdmdzsh"
+[functions.collect]
+# The handler always validates the user's JWT via auth.getUser. Supports ES256 JWTs.
+verify_jwt = false
