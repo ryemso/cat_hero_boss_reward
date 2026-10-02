@@ -108,7 +108,7 @@ function bind(){
 }
 async function init(){
   $('#app').innerHTML='<div class="loading">CAT HERO · 정산 데이터를 준비하고 있습니다.</div>';
-  try{const response=await fetch(`${base}seed.json`);if(!response.ok)throw Error('기본 매핑을 불러오지 못했습니다.');seed=await response.json();state=structuredClone(seed);let warning;
+  try{const response=await fetch(`${base}seed.json`,{cache:'no-store'});if(!response.ok)throw Error('기본 매핑을 불러오지 못했습니다.');seed=await response.json();state=structuredClone(seed);let warning;
     try{const stored=await readState(),saved=localStorage.getItem(KEY);if(stored)state=validateState(stored,seed);else if(saved){state=validateState(JSON.parse(saved),seed);await saveState(state);}}catch(err){warning=`저장 데이터 확인 필요: ${err.message}. 기존 저장본은 덮어쓰지 않았습니다.`;}
     for(const boss of seed.bosses)if(!state.bosses.includes(boss))state.bosses.push(boss);
     raidForm.members=state.members.filter(m=>m.active).slice(0,3).map(m=>m.id);raidForm.boss=state.bosses[0];await initCloud(()=>{adminRows=[];adminDetail=null;identity();});queue=await jobs();render();identity();if(warning)toast(warning,true);
