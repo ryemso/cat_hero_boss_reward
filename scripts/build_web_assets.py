@@ -16,7 +16,7 @@ with (root/'data/starter_mapping.csv').open(encoding='utf-8-sig',newline='') as 
             rewards.append(reward)
         templates.append({'candidate_id':row['candidate_id'],'reward_id':reward['id'],'path':f"templates/{row['candidate_id']}.png"})
 seed={'schemaVersion':1,'members':[{'id':i+1,'name':name,'active':True} for i,name in enumerate(['인솔','로티','초코','림','준일'])],
-      'bosses':['루니','캣토이','바나나'],'rewards':rewards,'templates':templates,'raids':[],
+      'bosses':['루니','캣토이','바나나','루이'],'rewards':rewards,'templates':templates,'raids':[],
       'settings':{'cash_per_100_value':500,'fee_rate':0.1,'match_threshold':0.78}}
 (public/'seed.json').write_text(json.dumps(seed,ensure_ascii=False,indent=2))
 vendor=public/'vendor';vendor.mkdir(exist_ok=True)

@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS settings (
 """
 
 DEFAULT_MEMBERS = ["인솔", "로티", "초코", "림", "준일"]
-DEFAULT_BOSSES = ["루니", "캣토이", "바나나"]
+DEFAULT_BOSSES = ["루니", "캣토이", "바나나", "루이"]
 DEFAULT_SETTINGS = {
     "cash_per_100_value": "500",
     "fee_rate": "0.10",
