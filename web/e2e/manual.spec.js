@@ -1,0 +1,23 @@
+import {test,expect} from '@playwright/test';
+test('manual words map to current master and persist without image',async({page})=>{
+ await page.goto('./');
+ await page.locator('[data-tab="rewards"]').click();
+ await page.locator('[data-r-name="5"]').fill('수정된 보상');
+ await page.locator('[data-save-reward="5"]').click();
+ await expect(page.locator('[data-save-reward="5"]')).toBeEnabled();
+ await page.locator('[data-tab="raid"]').click();
+ const form=page.locator('#manual-reward-form');
+ await form.locator('[name="word"]').fill('픽뽑');
+ await form.locator('[name="quantity"]').fill('120');
+ await form.locator('[name="reward_id"]').selectOption('5');
+ await form.locator('button').click();
+ await expect(page.locator('[data-reward="0"]')).toHaveValue('5');
+ await expect(page.getByText('입력 단어: 픽뽑')).toBeVisible();
+ await page.locator('[data-reward="0"]').selectOption('4');
+ await page.locator('#save-raid').click();
+ await page.locator('[data-tab="records"]').click();
+ await expect(page.locator('tbody tr')).toHaveCount(1);
+ await expect(page.locator('tbody')).toContainText('120');
+ await page.reload();await page.locator('[data-tab="records"]').click();
+ await expect(page.locator('tbody tr')).toHaveCount(1);
+});
