@@ -1,5 +1,5 @@
-candidate_id,실제_보상명,정산_컬럼,1단위당_보라가치,샘플수량,수량방식(AUTO/OCR/DEFAULT_ONE),비고
-U01,빨레,__EXCLUDE__,0,1,DEFAULT_ONE,엑셀 정산 제외(인식/기록만)
+﻿candidate_id,실제_보상명,정산_컬럼,1단위당_보라가치,샘플수량,수량방식(AUTO/OCR/DEFAULT_ONE),비고
+U01,빨레,빨레,0,1,DEFAULT_ONE,정산 포함
 U02,보라레시피,보라레시피,3000,1,DEFAULT_ONE,엑셀 보라레시피
 U03,파랑레시피,파랑레시피,130,1,DEFAULT_ONE,엑셀 파랑레시피
 U04,초록레시피,초록레시피,10,1,DEFAULT_ONE,엑셀 초록레시피
@@ -18,10 +18,10 @@ U16,동료소환,동료소환,0,80,OCR,동 수량 OCR / 엑셀 동료소환
 U17,랜덤 룬,랜덤 룬,0,3,OCR,룬뽑=엑셀 랜덤 룬
 U18,보라레시피,보라레시피,3000,1,DEFAULT_ONE,엑셀 보라레시피
 U19,파랑레시피,파랑레시피,130,1,DEFAULT_ONE,엑셀 파랑레시피
-U20,보,__EXCLUDE__,0,1,DEFAULT_ONE,엑셀 정산 제외(인식/기록만)
-U21,보,__EXCLUDE__,0,1,DEFAULT_ONE,엑셀 정산 제외(인식/기록만)
-U22,보,__EXCLUDE__,0,1,DEFAULT_ONE,엑셀 정산 제외(인식/기록만)
-U23,보,__EXCLUDE__,0,1,DEFAULT_ONE,엑셀 정산 제외(인식/기록만)
+U20,보,보,0,1,DEFAULT_ONE,정산 포함
+U21,보,보,0,1,DEFAULT_ONE,정산 포함
+U22,보,보,0,1,DEFAULT_ONE,정산 포함
+U23,보,보,0,1,DEFAULT_ONE,정산 포함
 U24,파템,파템,4300,1,DEFAULT_ONE,엑셀 파템
 U25,초템,초템,650,1,DEFAULT_ONE,엑셀 초템
 U26,초템,초템,650,1,DEFAULT_ONE,엑셀 초템

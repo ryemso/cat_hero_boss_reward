@@ -1,4 +1,4 @@
-export const EXCEL_COLUMNS=['파템','초템','흰템','전설픽업','동료소환','룬 소환','랜덤 룬','보라레시피','파랑레시피','초록레시피'];
+export const EXCEL_COLUMNS=['파템','초템','흰템','전설픽업','동료소환','룬 소환','랜덤 룬','보라레시피','파랑레시피','초록레시피','빨레','보'];
 export function validateName(name,items,id){
   name=String(name??'').trim();
   if(!name)throw Error('이름을 입력해 주세요.');
@@ -39,6 +39,11 @@ export function validateState(state,seed){
   }
   for(const member of state.members)if(typeof member.active!=='boolean')throw Error('참여자 활성 상태 오류');
   for(const r of state.rewards)if(!Number.isFinite(r.unit_value)||r.unit_value<0||!['AUTO','OCR','DEFAULT_ONE'].includes(r.quantity_mode)||!['EQUAL','PER_PERSON'].includes(r.distribution_type)||typeof r.enabled!=='boolean')throw Error('보상 설정 오류');
+  // Upgrade legacy excluded columns by canonical candidate, preserving names and values.
+  for(const cid of ['U01','U20','U21','U22','U23']){
+    const t=state.templates.find(x=>x.candidate_id===cid), r=state.rewards.find(x=>x.id===t?.reward_id);
+    if(r?.settlement_column==='__EXCLUDE__')r.settlement_column=cid==='U01'?'빨레':'보';
+  }
   for(const t of seed.templates){
     const imported=state.templates.find(x=>x.candidate_id===t.candidate_id), original=seed.rewards.find(r=>r.id===t.reward_id);
     const reward=state.rewards.find(r=>r.id===imported?.reward_id);

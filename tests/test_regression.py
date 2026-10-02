@@ -63,7 +63,7 @@ class Regression(unittest.TestCase):
         excluded=db.rows("SELECT * FROM reward_master WHERE name='빨레'")[0]
         db.execute('UPDATE reward_master SET unit_value=999999 WHERE id=?',(excluded['id'],))
         raid=db.save_raid('2026-10-02','14:00',1,ids,[{'reward_id':r['id'],'reward_name':'파템','quantity':2,'score':.987,'candidate_id':'U05','quantity_confidence':.9,'rarity':'BLUE'}, {'reward_id':excluded['id'],'reward_name':'빨레','quantity':1}])
-        s=member_summary();self.assertEqual(s.total_value.tolist(),[4300,4300]);self.assertEqual(s.after_fee.tolist(),[19350,19350])
+        s=member_summary();self.assertEqual(s.total_value.tolist(),[504299.5,504299.5]);self.assertEqual(s.after_fee.tolist(),[2269347.75,2269347.75])
         self.assertEqual(member_item_pivot()['파템'].tolist(),[1,1])
         db.save_member(ids[0],'이름 수정',False);self.assertIn('이름 수정',member_summary().member.tolist())
         with self.assertRaises(ValueError):db.delete_member(ids[0])

@@ -120,6 +120,9 @@ def _seed_starter_rewards(con: sqlite3.Connection) -> None:
                 continue
             existing_template = con.execute('SELECT reward_id FROM reward_templates WHERE candidate_id=?', (cid,)).fetchone()
             if existing_template:
+                # Upgrade legacy excluded rewards without resetting user prices or names.
+                if cid in ('U01','U20','U21','U22','U23'):
+                    con.execute("UPDATE reward_master SET settlement_column=? WHERE id=? AND settlement_column='__EXCLUDE__'", (settlement_col, existing_template[0]))
                 # A renamed reward remains attached to its original U candidate.
                 continue
             con.execute(

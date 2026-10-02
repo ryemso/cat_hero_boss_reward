@@ -65,7 +65,7 @@ def member_item_pivot(date_from=None, date_to=None):
         return pd.DataFrame()
 
     # 엑셀에 존재하는 정산 컬럼만 개인별 누적표에 표시한다.
-    # 빨레/보 등 현재 엑셀에서 정산하지 않는 보상은 원본 기록에는 남되 여기서는 제외한다.
+    # 빨레/보도 정산 컬럼에 포함한다.
     tracked = df[df["settlement_column"] != "__EXCLUDE__"].copy()
     if tracked.empty:
         return pd.DataFrame()
@@ -83,7 +83,7 @@ def member_item_pivot(date_from=None, date_to=None):
     # 기존 엑셀과 동일한 컬럼 순서. 없는 컬럼도 0으로 만들어 형식을 고정한다.
     excel_order = [
         "파템", "초템", "흰템", "전설픽업", "동료소환",
-        "룬 소환", "랜덤 룬", "보라레시피", "파랑레시피", "초록레시피",
+        "룬 소환", "랜덤 룬", "보라레시피", "파랑레시피", "초록레시피", "빨레", "보",
     ]
     for col in excel_order:
         if col not in p.columns:
