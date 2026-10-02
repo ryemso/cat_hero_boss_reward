@@ -232,7 +232,8 @@ with tabs[4]:
         selected=st.selectbox("스타터 후보", starter_names if starter_names else ["없음"])
         if starter_names:
             import cv2
-            crop=cv2.imread(str(STARTER_DIR/selected))
+            from core.vision import load_template
+            crop=load_template(STARTER_DIR/selected)
             candidate_crops=[crop]
 
     if candidate_crops:

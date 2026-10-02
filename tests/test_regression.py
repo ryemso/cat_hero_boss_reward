@@ -92,6 +92,11 @@ class Regression(unittest.TestCase):
         from streamlit.testing.v1 import AppTest
         at=AppTest.from_file(str(ROOT/'app.py')).run(timeout=30)
         self.assertFalse(at.exception)
+        # The starter preview must also use the Unicode-safe loader.
+        next(r for r in at.radio if r.label=='템플릿 소스').set_value('제공된 스타터 후보 사용')
+        with patch('cv2.imread', side_effect=RuntimeError('Unicode-unsafe loader')):
+            at.run()
+        self.assertFalse(at.exception)
         new=next(t for t in at.text_input if t.label=='새 참여자');new.set_value('UI 추가')
         next(b for b in at.button if b.label=='참여자 추가').click();at.run()
         self.assertFalse(at.exception);self.assertEqual(db.scalar("SELECT COUNT(*) FROM members WHERE name='UI 추가'"),1)
