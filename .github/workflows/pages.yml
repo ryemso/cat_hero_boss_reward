@@ -1,0 +1,97 @@
+name: Test, package and deploy Pages
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install regression test dependencies
+        run: python -m pip install streamlit pandas numpy Pillow opencv-python-headless openpyxl
+      - name: Python regression tests
+        run: python -m unittest discover -s tests -v
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install web dependencies
+        working-directory: web
+        run: npm ci
+      - name: Build web edition
+        working-directory: web
+        run: npm run build
+      - name: Web calculation and backup tests
+        working-directory: web
+        run: npm test
+      - name: Install browser for recognition tests
+        working-directory: web
+        run: npx playwright install --with-deps chromium
+      - name: Browser OCR and CRUD tests
+        working-directory: web
+        run: npx playwright test
+      - name: Upload web build
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-dist
+          path: web/dist
+      - name: Package installation edition
+        run: python scripts/package_install.py
+      - name: Upload installation ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: boss-settlement-install
+          path: boss_settlement_install.zip
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: validate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: web-dist
+          path: web/dist
+      - name: Check Pages publishing source
+        id: pages-state
+        uses: actions/github-script@v7
+        with:
+          script: |
+            try {
+              const response = await github.rest.repos.getPages({owner: context.repo.owner, repo: context.repo.repo});
+              if (response.data.build_type === 'workflow') return true;
+            } catch (error) {
+              if (error.status !== 404) throw error;
+            }
+            core.notice('First-time setup: Settings > Pages > Source > GitHub Actions, then re-run this workflow. Installation ZIP and web build are ready in Artifacts.');
+            await core.summary.addHeading('Pages setup needed').addRaw('Choose Settings → Pages → Source → GitHub Actions and re-run this workflow. Tests, installation ZIP and web build are complete.').write();
+            return false;
+      - name: Configure Pages
+        if: steps.pages-state.outputs.result == 'true'
+        uses: actions/configure-pages@v5
+      - name: Upload Pages artifact
+        if: steps.pages-state.outputs.result == 'true'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: web/dist
+      - name: Deploy
+        if: steps.pages-state.outputs.result == 'true'
+        id: deployment
+        uses: actions/deploy-pages@v4
